@@ -21,8 +21,19 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        //plugins for menu
+        'css/plugins/fontawesome-free/css/all.min.css',
+        'css/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css',
+        'css/plugins/datatables-responsive/css/responsive.bootstrap4.min.css',
+        'css/plugins/datatables-buttons/css/buttons.bootstrap4.min.css',
+        'css/dist/css/adminlte.min.css',
     ];
     public $js = [
+        'https://code.jquery.com/jquery-3.6.0.min.js',
+        'https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js',
+        'https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js',
+        'js/app.js',
+
     ];
     public $depends = [
         'yii\web\YiiAsset',

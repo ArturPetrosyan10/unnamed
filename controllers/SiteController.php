@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Rols;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -73,19 +74,28 @@ class SiteController extends Controller
 
     public function actionRegister()
     {
+        $user_type = Yii::$app->user->identity->u_role_id ?? false;
+        if ($user_type != 1 && $user_type != 5) {
+            return $this->redirect(array('about'));
+        }
         $model = new User(['scenario' => 'register']);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $post = Yii::$app->request->post();
             $model->password = Yii::$app->security->generatePasswordHash($model->password);
             $model->created_at = date('Y-m-d H:i:s');
+            $model->u_role_id = $post['role'];
+            $model->last_name = $post['User']['last_name'];
+            $model->number = $post['User']['number'];
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Registration successful! You can now login.');
-                return $this->redirect(['login']);
+                return $this->redirect(['register']);
             }
         }
-
+        $rols = Rols::find()->all();
         return $this->render('register', [
             'model' => $model,
+            'rols' => $rols,
         ]);
     }
 
@@ -93,7 +103,7 @@ class SiteController extends Controller
     {
         $this->layout = 'login';
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect(array('categories'));
+            return $this->redirect(array('index'));
         }
 
         $model = new LoginForm();
@@ -110,7 +120,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->redirect(array('login'));
     }
     /**
@@ -133,6 +142,8 @@ class SiteController extends Controller
         ]);
     }
 
+
+
     /**
      * Displays about page.
      *
@@ -142,4 +153,9 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+    /**
+     * @id $id
+     * @return void
+     */
+
 }

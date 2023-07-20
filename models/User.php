@@ -13,19 +13,20 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
 
-    // public $id;
-    // public $username;
-    // public $password;
-    // public $auth_key;
-
-    // public $password_reset_token;
-    // public $role;
-    // public $accessToken;
-    // public $email;
-    // public $created_at;
-    // public $updated_at;
-    // public $status;
-    //  public $last_login;
+    public $password_repeat;
+//     public $id;
+//     public $username;
+//     public $password;
+//     public $auth_key;
+//
+//     public $password_reset_token;
+//     public $role;
+//     public $accessToken;
+//     public $email;
+//     public $created_at;
+//     public $updated_at;
+//     public $status;
+//      public $last_login;
 
     /**
      * @inheritdoc
@@ -45,6 +46,15 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         }
         return false;
     }
+    public function rules()
+    {
+        return [
+            // Existing rules...
+            [['password_repeat'], 'required', 'on' => 'register'], // Make sure it is required during registration
+            [['password_repeat'], 'compare', 'compareAttribute' => 'password', 'message' => 'Passwords do not match'],
+        ];
+    }
+
     /**
      * @return array
      */
@@ -153,6 +163,11 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function getId()
     {
         return $this->getPrimaryKey();
+    }
+
+    public function getRole()
+    {
+        return Rols::findOne($this->u_role_id)->name;
     }
 
     /**
