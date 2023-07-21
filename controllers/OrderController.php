@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Order;
 use app\models\OrderSearch;
+use app\models\ProviderOrders;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -70,8 +71,15 @@ class OrderController extends Controller
         $model = new Order();
 
         if ($this->request->isPost) {
+            echo '<pre>';
+            $model->created_at = date('Y-m-d H:i:s');
+            $model->updated_at = date('Y-m-d H:i:s');
+            var_dump($model->updated_at);
+            var_dump($model->save());
             if ($model->load($this->request->post()) && $model->save()) {
+                $model->created_at = date('Y-m-d H:i:s');
                 return $this->redirect(['view', 'id' => $model->id]);
+
             }
         } else {
             $model->loadDefaultValues();
@@ -80,6 +88,14 @@ class OrderController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+    public function actionAddOrders(){
+        if($_POST){
+            $post = $_POST;
+            $order = new Order();
+            $order->load($post);
+            $order->save();
+        }
     }
 
     /**
@@ -131,4 +147,14 @@ class OrderController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    public function actionGetSubOrders() {
+        if(\Yii::$app->request->get()){
+            $get = \Yii::$app->request->get();
+            $sub_orders = ProviderOrders::find()->where(['order_id' => $get['id']])->all();
+            var_dump($sub_orders);
+            return $this->renderAjax('sub-orders', ['sub_orders' => $sub_orders]);
+        }
+    }
+
+
 }

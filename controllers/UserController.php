@@ -49,7 +49,7 @@ class UserController extends \yii\web\Controller
             $model->email = $post['email'];
             $model->number = $post['number'];
             $model->role = $post['role'];
-            $model->updated_at = date('Y-m-d H:m:s');
+            $model->updated_at = date('Y-m-d H:i:s');
             if(isset($post['password']) && !empty($post['password'])){
                 $model->password = Yii::$app->security->generatePasswordHash($post['password']);
             }

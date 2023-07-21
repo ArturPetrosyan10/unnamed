@@ -108,7 +108,10 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-                return $this->redirect('about');
+            $user = User::findOne(Yii::$app->user->id);
+            $user->last_login = date('Y-m-d H:i:s');
+            $user->save();
+            return $this->redirect('index');
         }
 
         $model->password = '';

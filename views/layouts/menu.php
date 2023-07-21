@@ -8,8 +8,11 @@
 
     if (!Yii::$app->user->isGuest){
         $status = Yii::$app->user->identity->u_role_id;
+        $name = Yii::$app->user->identity->username;
+        $lastname = Yii::$app->user->identity->last_name;
     }else{
         $status = false;
+        $name = 'Guest';
     }
     ?>
 <style>
@@ -22,17 +25,17 @@
 <div class="wrapper">
     <aside class="vh-100 main-sidebar sidebar-dark-primary elevation-4" style="position: static">
 
-        <a href="../../index3.html" class="brand-link">
-            <img src="../css/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
-        </a>
+<!--        <a href="../../index3.html" class="brand-link">-->
+<!--            <img src="../css/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">-->
+<!--            <span class="brand-text font-weight-light">AdminLTE 3</span>-->
+<!--        </a>-->
         <div class="sidebar">
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
                     <img src="../css/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block"><?= $name.' '.$lastname ?></a>
                 </div>
             </div>
             <div class="form-inline">
@@ -56,7 +59,7 @@
                         </a>
                     </li>
 
-                    <?php if($status == 1){ ?>
+                    <?php if($status == 1 || $status == 5){ ?>
                         <li class="nav-item">
                             <a href="register" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
@@ -66,6 +69,17 @@
                             </a>
                         </li>
                     <?php } ?>
+                    <?php if($status == 1 || $status == 5){ ?>
+                        <li class="nav-item">
+                            <a href="<?= Yii::$app->urlManager->createUrl(['order/index']) ?>" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Orders
+                                </p>
+                            </a>
+                        </li>
+                    <?php } ?>
+
 
 
 
