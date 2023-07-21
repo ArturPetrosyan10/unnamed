@@ -32,11 +32,21 @@ class OrderController extends Controller
         );
     }
 
+    public $enableCsrfValidation = false;
+
+    public function beforeAction($action)
+    {
+        if ($action->id == 'your-action') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
+    }
     /**
      * Lists all Order models.
      *
      * @return string
      */
+
     public function actionIndex()
     {
         $searchModel = new OrderSearch();
@@ -92,9 +102,10 @@ class OrderController extends Controller
     public function actionAddOrders(){
         if($_POST){
             $post = $_POST;
-            $order = new Order();
-            $order->load($post);
-            $order->save();
+            $postData = json_encode($post);
+            $filePath = '../views/order/request';
+            file_put_contents($filePath, $postData, FILE_APPEND);
+
         }
     }
 

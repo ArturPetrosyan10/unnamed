@@ -18,6 +18,7 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="modal-body">
                 <form action="user/update" method="post">
+<!--                <form action="order/add-orders" method="post">-->
                     <div class="form-group field-user-username">
                         <label class="control-label" for="user-username">Username</label>
                         <input type="hidden" name="id" class="form-control" value="<?= $user->id ?>" id="id">
