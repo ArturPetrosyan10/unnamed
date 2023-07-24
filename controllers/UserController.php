@@ -27,7 +27,7 @@ class UserController extends \yii\web\Controller
             $id = \Yii::$app->request->get('user_id');
             if (\Yii::$app->user->identity->u_role_id == 1 || \Yii::$app->user->identity->u_role_id == 5) {
                 $user = User::findOne($id);
-                if ($user) {
+                if ($user) {  
                     $user->delete();
                 }
             }

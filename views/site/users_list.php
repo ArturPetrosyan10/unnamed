@@ -1,6 +1,5 @@
 <?php
     use app\models\User;
-
     $users = User::find()->orderBy('role')->all();
 ?>
 <div class="card-body">

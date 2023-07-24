@@ -52,7 +52,19 @@ class OrderController extends Controller
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $model = new Order();
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $model->created_at = date('Y-m-d H:i:s');
+                $model->updated_at = date('Y-m-d H:i:s');
+                $model->save();
+            } else {
+                $model->loadDefaultValues();
+            }
+        }
+
         return $this->render('index', [
+            'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -79,17 +91,13 @@ class OrderController extends Controller
     public function actionCreate()
     {
         $model = new Order();
-
         if ($this->request->isPost) {
-            echo '<pre>';
             $model->created_at = date('Y-m-d H:i:s');
             $model->updated_at = date('Y-m-d H:i:s');
-            var_dump($model->updated_at);
-            var_dump($model->save());
+            $model->save();
             if ($model->load($this->request->post()) && $model->save()) {
                 $model->created_at = date('Y-m-d H:i:s');
                 return $this->redirect(['view', 'id' => $model->id]);
-
             }
         } else {
             $model->loadDefaultValues();
@@ -101,11 +109,37 @@ class OrderController extends Controller
     }
     public function actionAddOrders(){
         if($_POST){
-            $post = $_POST;
+            $post = $_REQUEST;
+
             $postData = json_encode($post);
             $filePath = '../views/order/request';
+//            file_put_contents($filePath, $postData['Amount'], FILE_APPEND);
+            $order = new Order();
+            $order->customer_name = $post['Customer_name'];
+            $order->customer_id = 11;
+            $order->customer_mobile = $post['Customer_mobile'];
+            $order->customer_comment = $post['Customer_comment'];
+            $order->reference = $post['Reference'];
+            $order->description = $post['Description'];
+            $order->link = $post['Link'];
+            $order->social_type = $post['Social_Type'];
+            $order->amount = $post['Amount'];
+            $order->created_at = date('Y-m-d H:i:s');
+            $order->updated_at = date('Y-m-d H:i:s');
+            $order->charge = 0;
+            $order->save();
             file_put_contents($filePath, $postData, FILE_APPEND);
-
+            die;
+//            $prov_order = new ProviderOrders();
+//            $prov_order->currency = $post['customer'];
+//            $prov_order->customer_name = $post['customer_name'];
+//            $prov_order->customer_mobile = $post['customer_mobile'];
+//            $prov_order->customer_comment = $post['customer_comment'];
+//            $prov_order->reference = $post['reference'];
+//            $prov_order->description = $post['description'];
+//            $prov_order->link = $post['link'];
+//            $prov_order->social_type = $post['social_type'];
+//            file_put_contents($filePath,$prov_order->save(), FILE_APPEND);
         }
     }
 
@@ -162,7 +196,7 @@ class OrderController extends Controller
         if(\Yii::$app->request->get()){
             $get = \Yii::$app->request->get();
             $sub_orders = ProviderOrders::find()->where(['order_id' => $get['id']])->all();
-            var_dump($sub_orders);
+//            var_dump($sub_orders);
             return $this->renderAjax('sub-orders', ['sub_orders' => $sub_orders]);
         }
     }

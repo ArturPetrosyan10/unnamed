@@ -48,7 +48,7 @@ use yii\widgets\ActiveForm;
                     <?= Html::submitButton('Create account', ['class' => 'btn btn-primary', 'name' => 'register-button']) ?>
                 </div>
 
-    <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
             </div>
             <div class="modal-footer">

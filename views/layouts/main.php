@@ -58,7 +58,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     ?>
 
 </header>
-
 <ul style="position: absolute; top: 2%;right: 2%;list-style: none; ">
     <li class="nav-item">
         <a href="login" class="nav-link d-flex ">
@@ -83,7 +82,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     </li>
 </ul>
 <main id="main" class="flex-shrink-0 d-flex" role="main">
-    <?= $this->render('menu') ?>
+    <?php if(!Yii::$app->user->isGuest){ ?>
+        <?= $this->render('menu') ?>
+    <?php } ?>
     <div class="container">
         <?php if (!empty($this->params['breadcrumbs'])): ?>
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>

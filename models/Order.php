@@ -8,10 +8,10 @@ use Yii;
  * This is the model class for table "order".
  *
  * @property int $id
- * @property int $user_id
+ * @property int $customer_id
  * @property string $created_at
  * @property string $updated_at
- * @property string|null $name
+ * @property string|null $customer_name
  * @property string|null $transaction_number
  * @property string|null $transaction_date
  * @property int|null $status
@@ -19,6 +19,15 @@ use Yii;
  * @property int|null $product_main_id
  * @property int|null $employee_id
  * @property int|null $tilaa_id
+ * @property int|null payload_link
+ * @property int|null customer_mobile
+ * @property int|null description
+ * @property int|null customer_comment
+ * @property int|null reference
+ * @property int|null link
+ * @property int|null social_type
+ * @property int|null amount
+ *
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -36,10 +45,10 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'created_at', 'updated_at'], 'required'],
-            [['user_id', 'status', 'product_main_id', 'employee_id', 'tilaa_id'], 'integer'],
+            [['created_at', 'updated_at'], 'required'],
+            [['customer_id', 'status', 'product_main_id', 'employee_id', 'tilaa_id'], 'integer'],
             [['created_at', 'updated_at', 'transaction_number', 'transaction_date'], 'safe'],
-            [['name'], 'string', 'max' => 100],
+            [['customer_name'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 255],
         ];
     }
@@ -51,10 +60,10 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'customer_id' => 'Customer ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'name' => 'Name',
+            'customer_name' => 'Customer Name',
             'transaction_number' => 'Transaction Number',
             'transaction_date' => 'Transaction Date',
             'status' => 'Status',
@@ -62,6 +71,12 @@ class Order extends \yii\db\ActiveRecord
             'product_main_id' => 'Product Main ID',
             'employee_id' => 'Employee ID',
             'tilaa_id' => 'Tilaa ID',
+            'payload_link' => 'Payload Link',
+            'customer_mobile' => 'Customer Mobile',
+            'customer_comment' => 'Customer Comment',
+            'description' => 'Description',
+            'reference' => 'Reference',
+            'social_type' => 'Social Type',
         ];
     }
 }

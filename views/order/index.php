@@ -18,30 +18,39 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Order', ['create'], ['class' => 'btn btn-success']) ?>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#orderModal" data-whatever="@getbootstrap">Create New Order</button>
+<!--        --><?php //= Html::a('Create Order', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
+        'tableOptions' => ['class' => 'table table-bordered table-hover table-striped'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'id',
-//            'user_id',
-//            'created_at',
+            'created_at',
+            'payload_link',
+            'charge',
+//            'customer_name',
+            'start_count',
+            'quantity',
+            'service',
+            'status',
+            'remains',
+//            'description',
+//            'customer_id',
 //            'updated_at',
-            'name',
-            'transaction_number',
+//            'transaction_number',
 //            'transaction_date',
-//            'status',
-            'email:email',
+//            'email:email',
             'providers'=> [
-                'format' => 'html',
-                'label' => 'providers',
+                'header' => '<a href="#">Providers</a>',
+                'format' => 'raw',
                 'value' => function($model) {
-                    return '<a class="show-sub-orders a'.$model->id.'"> Sub Orders  </a>';
+                    return '<a href="#" class="show-sub-orders a'.$model->id.'"> Sub Orders  </a>';
                 }
             ],
             [
@@ -76,8 +85,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 id: id,
                             },
                             success: function (data) {
-
-                               tr.after(data);
+                                // console.log(data);
+                             tr.after(data);
                             }
                         });
                     }
@@ -87,6 +96,9 @@ $this->params['breadcrumbs'][] = $this->title;
 </script>
 
 
+<?= $this->render('_form', [
+    'model' => $model,
+]) ?>
 
 
 

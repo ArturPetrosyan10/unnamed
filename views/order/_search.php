@@ -17,13 +17,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'user_id') ?>
+    <?= $form->field($model, 'customer_id') ?>
 
     <?= $form->field($model, 'created_at') ?>
 
     <?= $form->field($model, 'updated_at') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'customer_name') ?>
 
     <?php // echo $form->field($model, 'transaction_number') ?>
 

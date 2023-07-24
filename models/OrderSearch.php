@@ -17,8 +17,8 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'user_id', 'status', 'product_main_id', 'employee_id', 'tilaa_id'], 'integer'],
-            [['created_at', 'updated_at', 'name', 'transaction_number', 'transaction_date', 'email'], 'safe'],
+            [['id', 'customer_id', 'status', 'product_main_id', 'employee_id', 'tilaa_id'], 'integer'],
+            [['created_at', 'updated_at', 'customer_name', 'transaction_number', 'transaction_date', 'email'], 'safe'],
         ];
     }
 
@@ -59,7 +59,7 @@ class OrderSearch extends Order
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'customer_id' => $this->customer_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'transaction_number' => $this->transaction_number,
@@ -68,10 +68,16 @@ class OrderSearch extends Order
             'product_main_id' => $this->product_main_id,
             'employee_id' => $this->employee_id,
             'tilaa_id' => $this->tilaa_id,
+            'customer_mobile' => $this->customer_mobile,
+            'customer_comment' => $this->customer_comment,
+            'reference' => $this->reference,
+            'description' => $this->description,
+            'amount' => $this->amount,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'customer_name', $this->customer_name])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'payload_link', $this->payload_link]);
 
         return $dataProvider;
     }

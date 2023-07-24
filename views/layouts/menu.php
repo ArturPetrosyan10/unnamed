@@ -5,7 +5,6 @@
     use yii\bootstrap5\Html;
     use yii\bootstrap5\Nav;
     use yii\bootstrap5\NavBar;
-
     if (!Yii::$app->user->isGuest){
         $status = Yii::$app->user->identity->u_role_id;
         $name = Yii::$app->user->identity->username;
@@ -13,6 +12,7 @@
     }else{
         $status = false;
         $name = 'Guest';
+        $lastname = 'Guest';
     }
     ?>
 <style>
@@ -51,7 +51,7 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="index" class="nav-link">
+                        <a href="<?= Yii::$app->urlManager->createUrl(['/index']) ?>" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
                                 Home
@@ -61,7 +61,7 @@
 
                     <?php if($status == 1 || $status == 5){ ?>
                         <li class="nav-item">
-                            <a href="register" class="nav-link">
+                            <a href="<?= Yii::$app->urlManager->createUrl(['/register']) ?>" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Create accaunt
