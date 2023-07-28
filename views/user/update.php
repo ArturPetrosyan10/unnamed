@@ -5,8 +5,11 @@ use yii\widgets\ActiveForm;
 
 ?>
 
+<h1><?= Html::encode($this->title) ?></h1>
 
-<button type="button" class="btn btn-primary" id="modal-update" data-toggle="modal" data-target="#updateModal" data-whatever="@getbootstrap">Update Account</button>
+<p>
+    <button type="button" class="btn btn-primary" id="modal-update" data-toggle="modal" data-target="#updateModal" data-whatever="@getbootstrap">Update Account</button>
+</p>
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

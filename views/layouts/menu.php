@@ -22,7 +22,7 @@
 </style>
 <!--anun azg mail number role password-->
 <!--tablica-->
-<div class="wrapper">
+<div class="wrapper" >
     <aside class="vh-100 main-sidebar sidebar-dark-primary elevation-4" style="position: static">
 
 <!--        <a href="../../index3.html" class="brand-link">-->
@@ -64,7 +64,7 @@
                             <a href="<?= Yii::$app->urlManager->createUrl(['/register']) ?>" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
-                                    Create accaunt
+                                    Accounts
                                 </p>
                             </a>
                         </li>
@@ -75,6 +75,16 @@
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Orders
+                                </p>
+                            </a>
+                        </li>
+                    <?php } ?>
+                    <?php if($status == 1 || $status == 5){ ?>
+                        <li class="nav-item">
+                            <a href="<?= Yii::$app->urlManager->createUrl(['services/index']) ?>" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Our Services
                                 </p>
                             </a>
                         </li>

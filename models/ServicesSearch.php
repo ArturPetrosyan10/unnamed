@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Order;
+use app\models\Services;
 
 /**
- * OrderSearch represents the model behind the search form of `app\models\Order`.
+ * ServicesSearch represents the model behind the search form of `app\models\Services`.
  */
-class OrderSearch extends Order
+class ServicesSearch extends Services
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,9 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'status',  'employee_id', 'tilla_id'], 'integer'],
-            [['created_at', 'updated_at', 'customer_name', 'transaction_number', 'transaction_date','customer_email'], 'safe'],
+            [['id'], 'integer'],
+            [['service_name', 'description', 'created_at', 'updated_at'], 'safe'],
+            [['price'], 'number'],
         ];
     }
 
@@ -40,7 +41,7 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
-        $query = Order::find();
+        $query = Services::find();
 
         // add conditions that should always apply here
 
@@ -59,25 +60,13 @@ class OrderSearch extends Order
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'customer_id' => $this->customer_id,
+            'price' => $this->price,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'transaction_number' => $this->transaction_number,
-            'transaction_date' => $this->transaction_date,
-            'status' => $this->status,
-            'employee_id' => $this->employee_id,
-            'tilla_id' => $this->tilla_id,
-            'customer_mobile' => $this->customer_mobile,
-            'customer_comment' => $this->customer_comment,
-            'reference' => $this->reference,
-            'description' => $this->description,
-            'amount' => $this->amount,
-            'currency' => $this->currency,
         ]);
 
-        $query->andFilterWhere(['like', 'customer_name', $this->customer_name])
-            ->andFilterWhere(['like', 'customer_email', $this->customer_email])
-            ->andFilterWhere(['like', 'payload_link', $this->payload_link]);
+        $query->andFilterWhere(['like', 'service_name', $this->service_name])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

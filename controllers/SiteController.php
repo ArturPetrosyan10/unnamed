@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Rols;
+use app\models\UserSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -77,6 +78,9 @@ class SiteController extends Controller
 
     public function actionRegister()
     {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
         $user_type = Yii::$app->user->identity->u_role_id ?? false;
         if ($user_type != 1 && $user_type != 5) {
             return $this->redirect(array('about'));
@@ -97,6 +101,9 @@ class SiteController extends Controller
         }
         $rols = Rols::find()->all();
         return $this->render('register', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+
             'model' => $model,
             'rols' => $rols,
         ]);

@@ -1,38 +1,94 @@
 <?php
-//use app\models\User;
-//$users = User::find()->orderBy('role')->all();
-//?>
-<!--<div class="card-body">-->
-<!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Create New Account</button>-->
-<!--    <table id="example2" class="table table-bordered table-hover   table-striped dataTable dtr-inline">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <td>name</td>-->
-<!--            <td>lastname</td>-->
-<!--            <td>mail</td>-->
-<!--            <td>number</td>-->
-<!--            <td>role</td>-->
-<!--            --><?php //if (Yii::$app->user->identity->u_role_id == 1){ ?>
-<!--                <td>settings</td>-->
-<!--            --><?php //} ?>
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        --><?php //foreach ($users as $index => $user) { ?>
-<!--            <tr>-->
-<!--                <td>--><?php //= $user->username ?><!--</td>-->
-<!--                <td>--><?php //= $user->last_name ?><!--</td>-->
-<!--                <td>--><?php //= $user->email ?><!--</td>-->
-<!--                <td>--><?php //= $user->number ?><!--</td>-->
-<!--                <td>--><?php //= $user->getRole() ?><!--</td>-->
-<!--                --><?php //if (Yii::$app->user->identity->u_role_id == 1){ ?>
-<!--                    <td class="d-flex">-->
-<!--                        <a href="#" onclick="deleteUser(--><?php //= $user->id ?>//)" style="color:#dc3545!important" class=""><i class="fas fa-trash-alt "></i></a>
-//                        <a href="#" class="pl-2 modal_update_user" data-id="<?php //= $user->id ?><!--"><i class="fas fa-pencil-alt "></i></a>-->
-<!--                    </td>-->
-<!--                --><?php //} ?>
-<!--            </tr>-->
-<!--        --><?php //} ?>
-<!--        </tbody>-->
-<!--    </table>-->
-<!--</div>-->
+use app\models\User;
+use app\models\Providers;
+use app\models\ProviderOrders;
+use app\models\Services;
+$users = User::find()->orderBy('role')->all();
+//edit
+if($id){
+    $model = ProviderOrders::findOne(['id'=>$id]);
+    $selectedProviderId = $model->provider_id;
+    $selectedServiceId = $model->service_id;
+    $k = 1;
+}
+//create
+elseif ($order_id){
+    $k = 3;
+    $model = new ProviderOrders();
+}
+$providers = Providers::find()->select(['id' ,'name'])->asArray()->all();
+$providerItems = [];
+foreach ($providers as $provider) {
+    $providerItems[$provider['id']] = $provider['name'];
+}
+
+$services = Services::find()->select(['id' , 'service_name'])->asArray()->all();
+$ServiceItems = [];
+foreach ($services as $service) {
+    $ServiceItems[$service['id']] = $service['service_name'];
+}
+
+?>
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/** @var yii\web\View $this */
+/** @var app\models\Order $model */
+/** @var yii\widgets\ActiveForm $form */
+?>
+<button type="button" class="btn btn-primary" id="modal-update-sub-order" data-toggle="modal" data-target="#updateModal" data-whatever="@getbootstrap">Send Sub Order</button>
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update Sub Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="order-form">
+                        <?php $form = ActiveForm::begin([
+                            'action' => ['order/sub-order-main'],
+                        ]); ?>
+                        <?php if ($model->id){ //update ?>
+                            <input type="hidden" value="<?= $model->id ?>" name="id">
+                        <?php }elseif ($order_id){ //create?>
+                            <input type="hidden" value="<?= $order_id ?>" name="order_id">
+                        <?php }?>
+
+                        <?php for ($i = 0;$i < $k; $i++){ ?>
+                            <?= $form->field($model, 'provider_id[]')->label('Provider')->dropDownList(
+                                $providerItems,
+                                ['class' => 'form-control',
+                                'options' => [
+                                      @$selectedProviderId => ['selected' => true]
+                                    ]
+                                ]
+                            ) ?>
+                            <?= $form->field($model, 'service_id[]')->label('Service')->dropDownList(
+                                $ServiceItems,
+                                ['class' => 'form-control',
+                                'options' => [
+                                    @$selectedServiceId => ['selected' => true]
+                                ]
+                                ]
+                            ) ?>
+                            <?= $form->field($model,'quantity[]' )->textInput() ?>
+                        <?php } ?>
+                        <div class="form-group">
+                            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                        </div>
+
+                        <?php ActiveForm::end(); ?>
+
+                    </div>
+
+                     <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+

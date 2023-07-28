@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'css/dist/css/adminlte.min.css',
     ];
     public $js = [
-        'https://code.jquery.com/jquery-3.6.0.min.js',
+//        'https://code.jquery.com/jquery-3.6.0.min.js',
         'https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js',
         'https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js',
         'js/app.js',

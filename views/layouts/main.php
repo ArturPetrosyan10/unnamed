@@ -9,6 +9,7 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\grid\GridViewAsset;
 
 AppAsset::register($this);
 
@@ -25,6 +26,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <style>
+        table tr a{
+            color:#343a40;
+        }
+        .btn-primary{
+            background-color:#343a40 !important;
+        }
+        table button{
+            background-color:#343a40 !important;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -85,7 +97,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php if(!Yii::$app->user->isGuest){ ?>
         <?= $this->render('menu') ?>
     <?php } ?>
-    <div class="container">
+<!--    col-md-10 m-auto mt-0-->
+    <div class="container-fluid">
         <?php if (!empty($this->params['breadcrumbs'])): ?>
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
         <?php endif ?>

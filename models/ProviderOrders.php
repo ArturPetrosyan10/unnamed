@@ -13,6 +13,10 @@ use Yii;
  * @property int $provider_product_id
  * @property int $provider_id
  * @property float $price
+ * @property float $user_id
+ * @property float $service_id
+ * @property float $quantity
+ * @property float $status
  */
 class ProviderOrders extends \yii\db\ActiveRecord
 {
@@ -49,5 +53,13 @@ class ProviderOrders extends \yii\db\ActiveRecord
             'provider_id' => 'Provider ID',
             'price' => 'Price',
         ];
+    }
+    public function getService()
+    {
+        return Services::find()->where(['id' => $this->service_id])->one()['service_name'];
+    }
+    public function getProvider()
+    {
+        return Providers::find()->where(['id' => $this->provider_id])->one()['name'];
     }
 }
