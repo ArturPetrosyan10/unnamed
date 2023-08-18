@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use \app\models\ProviderOrders;
 
 /**
  * This is the model class for table "order".
@@ -15,7 +16,6 @@ use Yii;
  * @property string|null $transaction_number
  * @property string|null $transaction_date
  * @property int|null $status
- * @property int|null $product_main_id
  * @property int|null $employee_id
  * @property int|null $tilla_id
  * @property int|null payload_link
@@ -53,7 +53,7 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['created_at', 'updated_at'], 'required'],
-            [['customer_id', 'status', 'product_main_id', 'employee_id', 'tilla_id'], 'integer'],
+            [['customer_id', 'status',  'employee_id', 'tilla_id'], 'integer'],
             [['created_at', 'updated_at', 'transaction_number', 'transaction_date'], 'safe'],
             [['customer_name'], 'string', 'max' => 100],
             [['customer_email'], 'string', 'max' => 255],
@@ -75,7 +75,6 @@ class Order extends \yii\db\ActiveRecord
             'transaction_date' => 'Transaction Date',
             'status' => 'Status',
             'customer_email' => 'Customer Email',
-            'product_main_id' => 'Product Main ID',
             'employee_id' => 'Employee ID',
             'tilla_id' => 'Tilla ID',
             'payload_link' => 'Payload Link',
@@ -86,4 +85,8 @@ class Order extends \yii\db\ActiveRecord
             'social_type' => 'Social Type',
         ];
     }
+    public function getProvider_orders() {
+        return $this->hasMany(ProviderOrders::class, ['order_id' => 'id']);
+    }
+
 }

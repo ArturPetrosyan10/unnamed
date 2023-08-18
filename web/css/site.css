@@ -86,3 +86,6 @@ a.desc:after {
 .form-group {
     margin-bottom: 1rem;
 }
+.container-fluid{
+    width:calc(100% - 250px) !important;
+}

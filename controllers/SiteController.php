@@ -103,7 +103,6 @@ class SiteController extends Controller
         return $this->render('register', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-
             'model' => $model,
             'rols' => $rols,
         ]);

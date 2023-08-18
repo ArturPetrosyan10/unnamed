@@ -22,7 +22,9 @@ use yii\helpers\Url;
                     </button>
                 </div>
                 <div class="modal-body">
+
                     <?php $form = ActiveForm::begin(['id' => 'register-form']); ?>
+<!--                    --><?php //var_dump(Yii::$app->user->identity); ?>
 
                     <?= $form->field($model, 'username')->textInput(['autofocus' => true ,'required' => true]) ?>
 
@@ -41,7 +43,9 @@ use yii\helpers\Url;
                         <select class="form-control" name="role">
                             <?php
                             foreach ($rols as $index => $item) { ?>
-                                <option  value="<?= $item->id ?>"><?= $item->name ?></option>
+                                <?php if(Yii::$app->user->identity->u_role_id == 5 || (Yii::$app->user->identity->u_role_id == 1 && $item->id != 5)){ ?>
+                                        <option  value="<?= $item->id ?>"><?= $item->name ?></option>
+                                <?php } ?>
                             <?php } ?>
                         </select>
                     </div>
@@ -72,13 +76,14 @@ use yii\helpers\Url;
             'username',
             'last_name',
             'number',
-            'role'=>
+            'u_role_id'=>
                 [
-                    'attribute' => 'Role',
+                    'label' => 'Role',
                     'format' => 'raw',
                     'value'=>function ($model){
                             return $model->getRole();
-                    },                'attribute' => 'role',
+                    },
+                    'attribute' => 'u_role_id',
                 ] ,
             [
                 'class' => ActionColumn::className(),
@@ -93,9 +98,12 @@ use yii\helpers\Url;
                 'template' => '{update} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
-                        return '<a href="#" class="pl-2 modal_update_user" data-id="'.$model->id.'"><i class="fas fa-pencil-alt "></i></a>';
+                        if(Yii::$app->user->identity->u_role_id == 1 && $model->u_role_id != 5){
+                            return '<a href="#" class="pl-2 modal_update_user" data-id="'.$model->id.'"><i class="fas fa-pencil-alt "></i></a>';
+                        }else if (Yii::$app->user->identity->u_role_id == 5){
+                            return '<a href="#" class="pl-2 modal_update_user" data-id="'.$model->id.'"><i class="fas fa-pencil-alt "></i></a>';
+                        }
                     },
-
                     'delete' => function ($url, $model, $key) {
                         return '<a href="#" onclick="deleteUser('.$model->id.')" style="color:#dc3545!important" class=""><i class="fas fa-trash-alt "></i></a>';
                     },

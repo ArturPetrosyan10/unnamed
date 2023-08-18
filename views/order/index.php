@@ -57,7 +57,7 @@ use yii\grid\GridView;
             'customer_email',
             'reference',
             'tilla_id',
-            'description',
+//            'description',
             'link'=> [
                 'header' => '<a href="/order/index?sort=link" data-sort="link" >Link</a>',
                 'format' => 'raw',

@@ -17,6 +17,8 @@ use Yii;
  * @property float $service_id
  * @property float $quantity
  * @property float $status
+ * @property float $currency
+ * @property float description
  */
 class ProviderOrders extends \yii\db\ActiveRecord
 {
@@ -34,7 +36,7 @@ class ProviderOrders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'order_id', 'client_id', 'provider_product_id', 'provider_id', 'price'], 'required'],
+            [['order_id',], 'required'],
             [['id', 'order_id', 'client_id', 'provider_product_id', 'provider_id'], 'integer'],
             [['price'], 'number'],
         ];

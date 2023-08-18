@@ -54,6 +54,7 @@ class UserSearch extends User
             'email' => $this->email,
             'username' => $this->username,
             'last_name' => $this->last_name,
+            'u_role_id' => $this->u_role_id,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])

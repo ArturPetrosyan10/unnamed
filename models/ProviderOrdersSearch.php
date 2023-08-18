@@ -64,6 +64,8 @@ class ProviderOrdersSearch extends ProviderOrders
             'provider_product_id' => $this->provider_product_id,
             'provider_id' => $this->provider_id,
             'price' => $this->price,
+            'currency' => $this->currency,
+            'description' => $this->description,
         ]);
 
         return $dataProvider;

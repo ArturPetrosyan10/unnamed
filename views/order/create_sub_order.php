@@ -13,7 +13,7 @@ if($id){
 }
 //create
 elseif ($order_id){
-    $k = 3;
+    $k = 3 - ProviderOrders::find()->where(['order_id'=>$order_id])->count();
     $model = new ProviderOrders();
 }
 $providers = Providers::find()->select(['id' ,'name'])->asArray()->all();
@@ -76,7 +76,11 @@ use yii\widgets\ActiveForm;
                                 ]
                                 ]
                             ) ?>
-                            <?= $form->field($model,'quantity[]' )->textInput() ?>
+                            <?php if ($id){ ?>
+                                <?= $form->field($model,'quantity[]' )->textInput(['value' => $model->quantity]) ?>
+                            <?php } else{ ?>
+                                <?= $form->field($model,'quantity[]' )->textInput() ?>
+                            <?php } ?>
                         <?php } ?>
                         <div class="form-group">
                             <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

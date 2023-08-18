@@ -54,8 +54,13 @@ use yii\widgets\ActiveForm;
                         <label class="control-label" for="user-role">Role</label>
                         <select class="form-control" name="role">
                             <?php
+                            var_dump(Yii::$app->user->identity->u_role_id) ;
                             foreach ($rols as $index => $item) { ?>
-                                <option  value="<?= $item->id ?>" <?= ($user->u_role_id == $item->id ? 'selected' : '')  ?>><?= $item->name ?></option>
+                                <?php if(Yii::$app->user->identity->u_role_id == 5){  ?>
+                                        <option  value="<?= $item->id ?>" <?= ($user->u_role_id == $item->id ? 'selected' : '')  ?>><?= $item->name ?></option>
+                                <?php }else if(Yii::$app->user->identity->u_role_id == 1 && $item->id != 5){ ?>
+                                        <option  value="<?= $item->id ?>" <?= ($user->u_role_id == $item->id ? 'selected' : '')  ?>><?= $item->name ?></option>
+                                      <?php } ?>
                             <?php } ?>
                         </select>
                     </div>

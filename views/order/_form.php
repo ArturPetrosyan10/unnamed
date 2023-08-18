@@ -41,8 +41,8 @@ use yii\widgets\ActiveForm;
                         'TT' => 'TikTok (TT)',
                         'FB' => 'Facebook (FB)',
                         'YT' => 'YouTube (YT)',
-                        'TG' => 'Telegram (TG)',
-                        'TW' => 'Twitter (TW)',
+//                        'TG' => 'Telegram (TG)',
+//                        'TW' => 'Twitter (TW)',
                     ], ['prompt' => 'Select Social Type']) ?>
 
 

@@ -1,5 +1,5 @@
 function deleteUser(user_id) {
-    if(confirm('Ջնջել ՞')){
+    if(confirm('delete ?')){
         $.ajax({
             url: '/user/delete',
             method: 'get',

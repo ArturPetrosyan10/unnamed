@@ -14,10 +14,21 @@
         $name = 'Guest';
         $lastname = 'Guest';
     }
+    $currentRoute = Yii::$app->controller->route;
     ?>
 <style>
     .nav-pills .nav-link:not(.active):hover {
         color: white !important;
+    }
+
+    .active{
+        background-color: rgba(255,255,255,.9);
+        pointer-events: none;
+        border-radius: 5px;
+    }
+    .active a{
+        color: #343a40 !important;
+        pointer-events: none;
     }
 </style>
 <!--anun azg mail number role password-->
@@ -50,7 +61,7 @@
             </div>
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
+                    <li class="nav-item <?= $currentRoute == "site/index" ? 'active' : '' ?>">
                         <a href="<?= Yii::$app->urlManager->createUrl(['/index']) ?>" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
@@ -60,7 +71,7 @@
                     </li>
 
                     <?php if($status == 1 || $status == 5){ ?>
-                        <li class="nav-item">
+                        <li class="nav-item <?= $currentRoute == "site/register" ? 'active' : '' ?>">
                             <a href="<?= Yii::$app->urlManager->createUrl(['/register']) ?>" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
@@ -70,7 +81,7 @@
                         </li>
                     <?php } ?>
                     <?php if($status == 1 || $status == 5){ ?>
-                        <li class="nav-item">
+                        <li class="nav-item <?= $currentRoute == "order/index" ? 'active' : '' ?>">
                             <a href="<?= Yii::$app->urlManager->createUrl(['order/index']) ?>" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
@@ -80,7 +91,7 @@
                         </li>
                     <?php } ?>
                     <?php if($status == 1 || $status == 5){ ?>
-                        <li class="nav-item">
+                        <li class="nav-item <?= $currentRoute == "services/index" ? 'active' : '' ?>">
                             <a href="<?= Yii::$app->urlManager->createUrl(['services/index']) ?>" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
@@ -89,7 +100,6 @@
                             </a>
                         </li>
                     <?php } ?>
-
 
 
 
