@@ -35,6 +35,16 @@ $config = [
         ],
     ],
     */
+    'controllerMap' => [
+        'migrate' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'migrationPath' => [
+                '@fedemotta/cronjob/migrations', // This path should be included
+                // ... other migration paths if any
+            ],
+        ],
+    ],
+
 ];
 
 if (YII_ENV_DEV) {

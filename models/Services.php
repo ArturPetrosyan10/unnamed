@@ -1,5 +1,4 @@
 <?php
-
 namespace app\models;
 
 use Yii;
@@ -13,6 +12,10 @@ use Yii;
  * @property float|null $price
  * @property string $created_at
  * @property string $updated_at
+ * @property string $def_provider
+ * @property string $def_service
+ * @property string def_boost_service
+ * @property string service_id
  */
 class Services extends \yii\db\ActiveRecord
 {
@@ -52,4 +55,4 @@ class Services extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
-}
+  }

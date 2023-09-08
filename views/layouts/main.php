@@ -24,7 +24,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 <head>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?= 'Panel Istaboost' ?></title>
     <?php $this->head() ?>
     <style>
         table tr a{
@@ -36,8 +36,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         table button{
             background-color:#343a40 !important;
         }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
     </style>
 </head>
+
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 

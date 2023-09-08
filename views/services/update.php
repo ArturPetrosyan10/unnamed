@@ -1,23 +1,24 @@
 <?php
 
+use app\models\Providers;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+
+
 
 /** @var yii\web\View $this */
 /** @var app\models\Services $model */
 /** @var yii\widgets\ActiveForm $form */
 
-//$this->title = 'Update Services: ' . $model->id;
-//$this->params['breadcrumbs'][] = ['label' => 'Services', 'url' => ['index']];
-//$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-//$this->params['breadcrumbs'][] = 'Update';
+$providers = Providers::find()->all();
 ?>
 <button type="button" class="btn btn-primary" id="modal-update-services" data-toggle="modal" data-target="#updateModal" data-whatever="@getbootstrap">Update Service</button>
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateModal"  role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Update Account</h5>
+                <h5 class="modal-title" id="updateModalLabel">Update Service</h5>
                 <a type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </a>
@@ -39,8 +40,30 @@ use yii\widgets\ActiveForm;
 
                     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-                    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+<!--                    --><?php //= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
+                    <div class="form-group">
+                        <label>Default Provider</label>
+                        <select class="def-provider select2-select  form-control input-group input-group-sm" name="Services[def_provider]" style="width: 100%; ">
+                            <option>select Default provider</option>
+                        <?php foreach ($providers as $index => $provider) { ?>
+                                <option value="<?= $provider->id ?>"><?=$provider->name ?></option>
+                        <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group soctial_types_group" style="display:none">
+                        <label>Select Soctial Type</label>
+                        <select class="social_types form-control">
+                            <option></option>
+                            <option value="Youtube">Youtube</option>
+                            <option value="Tiktok">Tiktok</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Instagram">Instagram</option>
+                        </select>
+                    </div>
+                    <div class="form-group def-providers">
+
+                    </div>
 
                     <div class="form-group">
                         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -48,11 +71,12 @@ use yii\widgets\ActiveForm;
 
                     <?php ActiveForm::end(); ?>
 
-              </div>
-
+                </div>
                 <div class="modal-footer"></div>
             </div>
         </div>
     </div>
 </div>
-
+<script>
+    $('.select2-select').select2();
+</script>

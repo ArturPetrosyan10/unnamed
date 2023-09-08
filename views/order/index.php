@@ -25,23 +25,42 @@ use yii\grid\GridView;
         min-width: 100px;
         padding: 0.5rem 0.5rem !important;
     }
-
+    .unchecked td{
+        background:#f8d7da !important;
+    }
+    .text-success td{
+        background: #28a745!important;
+    }
 </style>
 <div class="order-index overflow-auto" style="padding:4% 3%">
-
     <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#orderModal" data-whatever="@getbootstrap">Create New Order</button>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-<?php $dataProvider->pagination->pageSize = 15; ?>
+<!--    --><?php //= date('Y-m-d H:i:s') ?>
+<?php $dataProvider->pagination->pageSize = 20; ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'tableOptions' => ['class' => 'table table-bordered table-hover table-striped'],
+        'rowOptions' => function ($model) {
+            if ($model->counts_checked !== 'true') {
+                return ['class' => 'unchecked'];
+            }
+        },
         'columns' => [
+//            [
+//                'attribute' => 'id',
+//                'label' => 'ID', // Default label
+//                // 'format' => 'text', // Default format
+//                // 'content' => function ($model) { return $model->id; }, // Default content
+//                'headerOptions' => ['class' => 'sorting'], // Default sorting class
+//                'contentOptions' => [], // Default content options
+//                // 'footer' => '', // Default footer content
+//                'footerOptions' => [], // Default footer options
+//                 'value' => function ($model) { return $model->id; }, // Default value
+//            ],
+            'id',
             'customer_name',
             'currency',
             'customer_mobile',
@@ -55,14 +74,15 @@ use yii\grid\GridView;
                 },
             ],
             'customer_email',
-            'reference',
-            'tilla_id',
+//            'reference',
+            'tilda_id',
+            'created_at',
 //            'description',
             'link'=> [
                 'header' => '<a href="/order/index?sort=link" data-sort="link" >Link</a>',
                 'format' => 'raw',
                 'value' => function($model) {
-                    return '<a href="'.$model->link.'">'.mb_substr($model->link, 8, 15).'...</a>';
+                    return '<a title="'.$model->link.'" href="'.$model->link.'" target="blank">'.mb_substr($model->link, 0, 15).'...</a>';
                 }
             ],
             'social_type',
@@ -70,7 +90,7 @@ use yii\grid\GridView;
                 'header' => '<a href="#">Providers</a>',
                 'format' => 'raw',
                 'value' => function($model) {
-                    return '<a href="#" class="show-sub-orders a'.$model->id.'"> Sub Orders  </a>';
+                    return '<a style="cursor:pointer" class="show-sub-orders a'.$model->id.'"> Sub Orders  </a>';
                 }
             ],
             [
@@ -94,10 +114,6 @@ use yii\grid\GridView;
                     },
                     'view' => function ($url, $model, $key) {
                         $url = '#';
-                        $count = ProviderOrders::find()->where(['order_id' => $model->id])->count();
-                        if ($count >= 3){
-                            return '<a class="view-order-modal cursor-pointer" data-id="'.$model->id.'" style="cursor:pointer"><i class="fa fa-eye" aria-hidden="true"></i></a>';
-                        }
                         return '<a class="view-order-modal cursor-pointer" data-id="'.$model->id.'" style="cursor:pointer"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                 <a class="update-sub-order-modal" data-id="'.$model->id.'" style="padding-left:4px; cursor:pointer"><i class="fa fa-plus"></i></a>';
                     },
@@ -108,9 +124,9 @@ use yii\grid\GridView;
             'options' => ['class' => 'pagination'], // Customize the CSS class for the pagination container
 //            'prevPageLabel' => 'Previous', // Customize the "Previous" page label
 //            'nextPageLabel' => 'Next', // Customize the "Next" page label
-//            'firstPageLabel' => 'First', // Customize the "First" page label
-//            'lastPageLabel' => 'Last', // Customize the "Last" page label
-            'maxButtonCount' => 10, // Maximum number of page buttons to be displayed
+            'firstPageLabel' => 'First', // Customize the "First" page label
+            'lastPageLabel' => 'Last', // Customize the "Last" page label
+            'maxButtonCount' => 15, // Maximum number of page buttons to be displayed
             'linkContainerOptions' => ['class' => 'page-item'], // Customize the CSS class for the <li> elements
             'linkOptions' => ['class' => 'page-link'], // Customize the CSS class for the <a> elements
             'disabledListItemSubTagOptions' => ['tag' => 'a href="#" class="page-link"'], // Render disabled links as <a> tags

@@ -2,9 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\BoostServices;
+use app\models\Providers;
+use app\models\ServiceLogs;
 use app\models\Services;
 use app\models\ServicesSearch;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -70,18 +74,39 @@ class ServicesController extends Controller
         $searchModel = new ServicesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         $model = new Services();
+        $service_log = new ServiceLogs();
+        $user_id = \Yii::$app->user->identity->id;
         if (\Yii::$app->request->isPost) {
             $post = \Yii::$app->request->post();
-
             if(@$post['id']){
                 $model = Services::findOne([$post['id']]);
             }
+            $service_log->from_def_service = @$model->def_service;
+            $service_log->from_def_provider = @$model->def_provider;
             $model->load($this->request->post());
+
+            if (@$post['Services']['def_provider'] && @$post['Services']['def_provider'] != "select Default provider"){
+                $model->def_provider = $post['Services']['def_provider'];
+            }
+            if(@$post['Services']['def_service']){
+                $model->def_service =  $post['Services']['def_service'];
+                $model->price = BoostServices::findOne($model->def_service)->rate;
+
+            }
+            if(@$model->def_service && @$model->def_provider){
+                $model->def_boost_service = BoostServices::findOne($model->def_service)->service_id;
+            }
             if (!@$model->id){
                 $model->created_at = date('Y-m-d H:i:s');
             }
             $model->updated_at = date('Y-m-d H:i:s');
+            $service_log->updated = date('Y-m-d H:i:s');
+            $service_log->to_def_service = @$model->def_service;
+            $service_log->to_def_provider = @$model->def_provider;
+            $service_log->user_id = $user_id;
             $model->save();
+            $service_log->service_id = @$model->id;
+            $service_log->save();
             $this->redirect('index');
         }
 
@@ -147,6 +172,16 @@ class ServicesController extends Controller
             return $this->renderAjax('update', [
                 'model' => $model,
             ]);
+        }
+    }
+    public function actionDefServices()
+    {
+        if(\Yii::$app->request->post()){
+            $id = $_POST['id'];
+            $name = Providers::findOne($id)->name;
+            $st = $_POST['name'];
+            $boost_services = BoostServices::find()->where(['=','services_from',$name])->andWhere(['like','name',$st])->asArray()->all();
+            return Json::encode($boost_services);
         }
     }
 

@@ -1,13 +1,16 @@
 <?php
 
+use app\models\Providers;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var app\models\Services $model */
 /** @var yii\widgets\ActiveForm $form */
+
+$providers = Providers::find()->all();
 ?>
-<div class="modal fade" id="serviceModal" tabindex="-1" role="dialog" aria-labelledby="serviceModalLabel" aria-hidden="true">
+<div class="modal fade" id="serviceModal"  role="dialog" aria-labelledby="serviceModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,22 +22,44 @@ use yii\widgets\ActiveForm;
             <div class="modal-body">
                 <div class="services-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+                    <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'service_name')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'service_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+<!--                    --><?php //= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
+                    <div class="form-group">
+                        <label>Default Provider</label>
+                        <select class="def-provider select2-select  form-control input-group input-group-sm" name="Services[def_provider]" style="width: 100%; ">
+                            <option>select Default provider</option>
+                            <?php foreach ($providers as $index => $provider) { ?>
+                                <option value="<?= $provider->id ?>"><?=$provider->name ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+                    <div class="form-group soctial_types_group" style="display:none">
+                        <label>Select Soctial Type</label>
+                        <select class="social_types form-control">
+                            <option></option>
+                            <option value="Youtube">Youtube</option>
+                            <option value="Tiktok">Tiktok</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Instagram">Instagram</option>
+                        </select>
+                    </div>
+                    <div class="form-group def-providers">
 
-    <?php ActiveForm::end(); ?>
+                    </div>
+                    <div class="form-group">
+                        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    </div>
 
-</div>
+                    <?php ActiveForm::end(); ?>
+
+                </div>
             </div>
             <div class="modal-footer">
 

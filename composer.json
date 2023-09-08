@@ -14,6 +14,7 @@
     },
     "minimum-stability": "stable",
     "require": {
+        "fedemotta/yii2-cronjob": "^1.1",
         "php": ">=7.4.0",
         "yiisoft/yii2": "~2.0.45",
         "yiisoft/yii2-bootstrap5": "~2.0.2",
@@ -22,7 +23,8 @@
         "ext-json": "*",
         "jstolpe/instagram-graph-api-php-sdk": "^1.0",
       "ext-simplexml": "*",
-        "guzzlehttp/guzzle": "^7.7"
+        "guzzlehttp/guzzle": "^7.7",
+        "dragonmantank/cron-expression": "^3.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

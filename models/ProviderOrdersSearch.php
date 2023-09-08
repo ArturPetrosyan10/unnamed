@@ -17,7 +17,7 @@ class ProviderOrdersSearch extends ProviderOrders
     public function rules()
     {
         return [
-            [['id', 'order_id', 'client_id', 'provider_product_id', 'provider_id'], 'integer'],
+            [['id', 'order_id', 'client_id',  'provider_id'], 'integer'],
             [['price'], 'number'],
         ];
     }
@@ -41,7 +41,10 @@ class ProviderOrdersSearch extends ProviderOrders
     public function search($params)
     {
         $query = ProviderOrders::find();
-
+        $query->where(['!=','status','']);
+        if(!isset($params['sort'])){
+            $query->orderBy(['created_at' => SORT_DESC]);
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -61,10 +64,8 @@ class ProviderOrdersSearch extends ProviderOrders
             'id' => $this->id,
             'order_id' => $this->order_id,
             'client_id' => $this->client_id,
-            'provider_product_id' => $this->provider_product_id,
             'provider_id' => $this->provider_id,
             'price' => $this->price,
-            'currency' => $this->currency,
             'description' => $this->description,
         ]);
 

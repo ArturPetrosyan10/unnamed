@@ -52,6 +52,23 @@ $('body').on('click','.update-order-modal', function (el) {
         }
     });
 })
+// $('body').on('click','.update-sub-order-modal', function (el) {
+//     if($('#updateModal')){
+//         $('#updateModal').remove();
+//     }
+//     var order_id = $(this).data('id');
+//     $.ajax({
+//         url: '/order/update',
+//         method: 'post',
+//         dataType: 'html',
+//         data: { order_id: order_id, },
+//         success: function (data) {
+//             $('body').append(data);
+//             $('body').find('#modal-update-order').trigger('click');
+//             $('body').find('#modal-update-order').remove();
+//         }
+//     });
+// })
 $('body').on('click','.update-service-modal', function (el) {
     if($('#updateModal')){
         $('#updateModal').remove();
@@ -162,3 +179,44 @@ $('body').on('input','#user-password , #user-password_repeat', function () {
         $('[type="submit"]').attr('disabled', false);
     }
 })
+var def_prov = 0;
+$('body').on('change','.def-provider',function () {
+    let el = $(this);
+    def_prov = $(this).val();
+    el.closest('form').find('.soctial_types_group').css('display','block');
+})
+$('body').on('change','.social_types',function () {
+    let el = $(this);
+    let id = def_prov;
+    let name = $(this).val();
+    $.ajax({
+        url: 'def-services',
+        method: 'post',
+        dataType: 'json',
+        data: { id: id,name: name,  },
+        success: function (data) {
+            if ($(".def-service").length > 0) {
+                $(".def-providers").html('');
+            }
+            var labelElement = $('<label>', {
+                text: 'Select Default Service:'
+            });
+            let selectElement = $('<select>', {
+                class: 'def-service select2-select w-100', // Add your class or attributes here
+                name: 'Services[def_service]'    // Add your name attribute here if needed
+            });
+
+            data.forEach(function(item) {
+                var option = $('<option>', {
+                    value: item.id,
+                    text: item.service_id+' '+item.name
+                });
+                selectElement.append(option);
+            });
+            // el.closest('div').after(labelElement, selectElement);
+            el.closest('form').find('.def-providers').append(labelElement, selectElement);
+            $('.select2-select').select2();
+        }
+    });
+})
+

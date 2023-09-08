@@ -7,12 +7,12 @@ use yii\widgets\ActiveForm;
 /** @var app\models\Order $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
-<button type="button" class="btn btn-primary" id="modal-update-order" data-toggle="modal" data-target="#updateModal" data-whatever="@getbootstrap">Update Account</button>
+<button type="button" class="btn btn-primary" id="modal-update-order" data-toggle="modal" data-target="#updateModal" data-whatever="@getbootstrap">Update Order</button>
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Update Account</h5>
+                <h5 class="modal-title" id="updateModalLabel">Update Order</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -45,8 +45,8 @@ use yii\widgets\ActiveForm;
                         'TT' => 'TikTok (TT)',
                         'FB' => 'Facebook (FB)',
                         'YT' => 'YouTube (YT)',
-                        'TG' => 'Telegram (TG)',
-                        'TW' => 'Twitter (TW)',
+//                        'TG' => 'Telegram (TG)',
+//                        'TW' => 'Twitter (TW)',
                     ], ['prompt' => 'Select Social Type']) ?>
 
 

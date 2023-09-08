@@ -13,27 +13,27 @@ use \app\models\ProviderOrders;
  * @property string $created_at
  * @property string $updated_at
  * @property string|null $customer_name
- * @property string|null $transaction_number
- * @property string|null $transaction_date
  * @property int|null $status
  * @property int|null $employee_id
- * @property int|null $tilla_id
- * @property int|null payload_link
- * @property int|null customer_mobile
- * @property int|null description
- * @property int|null customer_comment
- * @property int|null reference
- * @property int|null link
- * @property int|null social_type
- * @property int|null amount
- * @property int|null currency
- * @property int|null charge
- * @property int|null sign
- * @property int|null webhookId
- * @property int|null transactionId
- * @property int|null transactionStatus
- * @property int|null customer_email
- * @property int|null instaboost_quantity
+ * @property int|null $tilda_id
+ * @proderty int|null $payload_link
+ * @property int|null $customer_mobile
+ * @property int|null $description
+ * @property int|null $customer_comment
+ * @property int|null $reference
+ * @property int|null $link
+ * @property int|null $social_type
+ * @property int|null $amount
+ * @property int|null $currency
+ * @property int|null $charge
+ * @property int|null $sign
+ * @property int|null $webhookId
+ * @property int|null $transactionId
+ * @property int|null $transactionStatus
+ * @property int|null $customer_email
+ * @property int|null $instaboost_quantity
+ * @property string|null $origName
+ * @property string|null $counts_checked
  *
  */
 class Order extends \yii\db\ActiveRecord
@@ -53,10 +53,9 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['created_at', 'updated_at'], 'required'],
-            [['customer_id', 'status',  'employee_id', 'tilla_id'], 'integer'],
-            [['created_at', 'updated_at', 'transaction_number', 'transaction_date'], 'safe'],
+            [['customer_id', 'status',  'employee_id', 'tilda_id'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
             [['customer_name'], 'string', 'max' => 100],
-            [['customer_email'], 'string', 'max' => 255],
         ];
     }
 
@@ -71,12 +70,10 @@ class Order extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'customer_name' => 'Customer Name',
-            'transaction_number' => 'Transaction Number',
-            'transaction_date' => 'Transaction Date',
             'status' => 'Status',
             'customer_email' => 'Customer Email',
             'employee_id' => 'Employee ID',
-            'tilla_id' => 'Tilla ID',
+            'tilda_id' => 'Tilda ID',
             'payload_link' => 'Payload Link',
             'customer_mobile' => 'Customer Mobile',
             'customer_comment' => 'Customer Comment',
@@ -88,5 +85,10 @@ class Order extends \yii\db\ActiveRecord
     public function getProvider_orders() {
         return $this->hasMany(ProviderOrders::class, ['order_id' => 'id']);
     }
-
+    public function deleteOrders($id){
+        var_dump($id);
+        $order =  Order::findOne($id);
+        $order->delete();
+        ProviderOrders::deleteAll(['order_id'=>$id]);
+    }
 }

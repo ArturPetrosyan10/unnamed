@@ -27,6 +27,7 @@ class AppAsset extends AssetBundle
         'css/plugins/datatables-responsive/css/responsive.bootstrap4.min.css',
         'css/plugins/datatables-buttons/css/buttons.bootstrap4.min.css',
         'css/dist/css/adminlte.min.css',
+        'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
     ];
     public $js = [
 //        'https://code.jquery.com/jquery-3.6.0.min.js',
@@ -37,8 +38,9 @@ class AppAsset extends AssetBundle
         'css/plugins/chart.js/Chart.min.js',
         'css/dist/js/adminlte.min.js',
         'css/dist/js/demo.js',
+        'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
 
-        'js/app.js',
+        'js/app.js?v=10',
 
     ];
     public $depends = [

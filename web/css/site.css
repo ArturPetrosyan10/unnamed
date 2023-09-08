@@ -89,3 +89,8 @@ a.desc:after {
 .container-fluid{
     width:calc(100% - 250px) !important;
 }
+
+
+.select2-container .select2-selection--single{
+    height: calc(2.25rem + 2px) !important;
+}

@@ -19,10 +19,13 @@ use Yii;
  * @property float $status
  * @property float $currency
  * @property float description
+ * @property float customer_comment
+ * @property float customer_mobile
+ * @property float link
  */
 class ProviderOrders extends \yii\db\ActiveRecord
 {
-    /**
+    /**`
      * {@inheritdoc}
      */
     public static function tableName()
@@ -37,7 +40,7 @@ class ProviderOrders extends \yii\db\ActiveRecord
     {
         return [
             [['order_id',], 'required'],
-            [['id', 'order_id', 'client_id', 'provider_product_id', 'provider_id'], 'integer'],
+            [['id', 'order_id', 'client_id', 'provider_id'], 'integer'],
             [['price'], 'number'],
         ];
     }
@@ -51,7 +54,6 @@ class ProviderOrders extends \yii\db\ActiveRecord
             'id' => 'ID',
             'order_id' => 'Order ID',
             'client_id' => 'Client ID',
-            'provider_product_id' => 'Provider Product ID',
             'provider_id' => 'Provider ID',
             'price' => 'Price',
         ];

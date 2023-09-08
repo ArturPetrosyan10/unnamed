@@ -91,11 +91,31 @@
                         </li>
                     <?php } ?>
                     <?php if($status == 1 || $status == 5){ ?>
+                        <li class="nav-item <?= $currentRoute == "provider-orders/index" ? 'active' : '' ?>">
+                            <a href="<?= Yii::$app->urlManager->createUrl(['provider-orders/index']) ?>" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Provider Orders
+                                </p>
+                            </a>
+                        </li>
+                    <?php } ?>
+                    <?php if($status == 1 || $status == 5){ ?>
                         <li class="nav-item <?= $currentRoute == "services/index" ? 'active' : '' ?>">
                             <a href="<?= Yii::$app->urlManager->createUrl(['services/index']) ?>" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Our Services
+                                </p>
+                            </a>
+                        </li>
+                    <?php } ?>
+                    <?php if($status == 1 || $status == 5){ ?>
+                        <li class="nav-item <?= $currentRoute == "boost-services/index" ? 'active' : '' ?>">
+                            <a href="<?= Yii::$app->urlManager->createUrl(['boost-services/index']) ?>" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    All Services
                                 </p>
                             </a>
                         </li>

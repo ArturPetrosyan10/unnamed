@@ -1,4 +1,7 @@
 <?php
+
+use app\models\BoostServices;
+use app\models\Providers;
 use app\models\Services;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -26,15 +29,13 @@ use yii\grid\GridView;
 
 </style>
 <div class="services-index " style="padding:4% 3%">
-
     <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#serviceModal" data-whatever="@getbootstrap">Create New Service</button>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?php $dataProvider->pagination->pageSize = 15; ?>
+<!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php $dataProvider->pagination->pageSize = 11; ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
@@ -44,10 +45,36 @@ use yii\grid\GridView;
             'id',
             'service_name',
             'description:ntext',
-            'price',
             'created_at',
-            'def_provider',
-            'def_service',
+//            'price',
+            [
+                'attribute' => 'price',
+                'label' => 'Price', // Default label
+                'headerOptions' => ['class' => 'sorting'], // Default sorting class
+                'contentOptions' => [], // Default content options
+                'footerOptions' => [], // Default footer options
+                'value' => function ($model) { return number_format($model->price,'4'); }, // Default value
+            ],
+            'def_provider'=> [
+                'attribute' => 'def_provider',
+                'label' => 'Default Provider',
+                'headerOptions' => ['class' => 'sorting'], // Default sorting class
+                'format' => 'raw',
+                'value' => function($model) {
+                    @$url = @parse_url(Providers::findOne($model->def_provider)->name);
+                    return @$url['host'];
+                }
+            ],
+            'def_service'=> [
+                'attribute' => 'def_service',
+                'label' => 'Default Service',
+                'headerOptions' => ['class' => 'sorting'], // Default sorting class
+                'format' => 'raw',
+                'value' => function($model) {
+                    $def_serv = BoostServices::findOne($model->def_service);
+                    return  @$def_serv->service_id.' '.@$def_serv->name ?? '' ;
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, $model, $key, $index, $column) {
@@ -76,9 +103,9 @@ use yii\grid\GridView;
             'options' => ['class' => 'pagination'], // Customize the CSS class for the pagination container
 //            'prevPageLabel' => 'Previous', // Customize the "Previous" page label
 //            'nextPageLabel' => 'Next', // Customize the "Next" page label
-//            'firstPageLabel' => 'First', // Customize the "First" page label
-//            'lastPageLabel' => 'Last', // Customize the "Last" page label
-            'maxButtonCount' => 10, // Maximum number of page buttons to be displayed
+            'firstPageLabel' => 'First', // Customize the "First" page label
+            'lastPageLabel' => 'Last', // Customize the "Last" page label
+            'maxButtonCount' => 15, // Maximum number of page buttons to be displayed
             'linkContainerOptions' => ['class' => 'page-item'], // Customize the CSS class for the <li> elements
             'linkOptions' => ['class' => 'page-link'], // Customize the CSS class for the <a> elements
             'disabledListItemSubTagOptions' => ['tag' => 'a href="#" class="page-link"'], // Render disabled links as <a> tags
@@ -86,6 +113,8 @@ use yii\grid\GridView;
         ],
     ]); ?>
 </div>
+
+
 <?php
     if (!@$model){
         $model = new Services();
@@ -94,3 +123,31 @@ use yii\grid\GridView;
 <?= $this->render('_form', [
     'model' => $model,
 ]) ?>
+<!--    <table class="table table-striped table-bordered" style="display:none !important;">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>id</th>-->
+<!--                <th>name</th>-->
+<!--                <th>rate</th>-->
+<!--                <th>min</th>-->
+<!--                <th>max</th>-->
+<!--                <th>Prov_Link</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+        <?php
+//        $boost = BoostServices::find()->where(['like','name','facebook'])
+//            ->andWhere(['like','name','like'])
+//            ->orderBy('rate','min','max')->asArray()->all();
+//        foreach ($boost as $item) { ?>
+<!--            <tr>-->
+<!--                <td>--><?php //= $item['id'] ?><!--</td>-->
+<!--                <td>--><?php //= $item['name'] ?><!--</td>-->
+<!--                <td>--><?php //= $item['rate'] ?><!--</td>-->
+<!--                <td>--><?php //= number_format($item['min']) ?><!--</td>-->
+<!--                <td>--><?php //= number_format($item['max']) ?><!--</td>-->
+<!--                <td>--><?php //= $item['services_from'] ?><!--</td>-->
+<!--            </tr>-->
+<!---->
+<?php //  } ?>
+<!--    </table>-->
+

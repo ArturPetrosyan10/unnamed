@@ -17,8 +17,8 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'status',  'employee_id', 'tilla_id'], 'integer'],
-            [['created_at', 'updated_at', 'customer_name', 'transaction_number', 'transaction_date','customer_email'], 'safe'],
+            [['id', 'customer_id', 'status',  'employee_id', 'tilda_id'], 'integer'],
+            [['created_at', 'updated_at', 'customer_name', 'customer_email'], 'safe'],
         ];
     }
 
@@ -41,8 +41,10 @@ class OrderSearch extends Order
     public function search($params)
     {
         $query = Order::find();
-
         // add conditions that should always apply here
+        if(!isset($params['sort'])){
+            $query->orderBy(['created_at' => SORT_DESC]);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -62,17 +64,16 @@ class OrderSearch extends Order
             'customer_id' => $this->customer_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'transaction_number' => $this->transaction_number,
-            'transaction_date' => $this->transaction_date,
             'status' => $this->status,
             'employee_id' => $this->employee_id,
-            'tilla_id' => $this->tilla_id,
+            'tilda_id' => $this->tilda_id,
             'customer_mobile' => $this->customer_mobile,
             'customer_comment' => $this->customer_comment,
             'reference' => $this->reference,
             'description' => $this->description,
             'amount' => $this->amount,
             'currency' => $this->currency,
+            'link' => $this->link,
         ]);
 
         $query->andFilterWhere(['like', 'customer_name', $this->customer_name])

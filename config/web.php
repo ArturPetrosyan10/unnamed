@@ -11,6 +11,12 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'curl' => [
+            'class' => 'yii\httpclient\CurlTransport',
+            'options' => [
+                CURLOPT_TIMEOUT => 150,
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'GnSKx_5DWMrC3rLrvhpze2LUoZgw30qx',

@@ -1,4 +1,5 @@
- <?php if($sub_orders) { ?>
+
+<?php if(@$sub_orders) { ?>
         <tr class="sub-tr">
             <th colspan="2">id</th>
             <th colspan="2">provider</th>
@@ -10,9 +11,8 @@
     <?php
         $i = 1;
         foreach ($sub_orders as $index => $sub_order) { ?>
-        <tr data-suborder="<?= $sub_order->order_id ?>">
-            <td colspan="2"><?= $sub_order->id ?></td>
-<!--            <td colspan="2">--><?php //= date("Y-m-d", strtotime($sub_order->created_at)) ?><!--</td>-->
+        <tr data-suborder="<?= @$sub_order->order_id ?>"   class="<?= (@$sub_order->status) ? 'text-success' : ''  ?>"  >
+            <td colspan="2"><?= @$sub_order->id ?></td>
             <td colspan="2"><?= @$sub_order->getProvider() ?></td>
             <td colspan="1"><?= @$sub_order->description ?></td>
             <td colspan="1"><?= @$sub_order->quantity ?></td>
