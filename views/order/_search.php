@@ -25,7 +25,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'customer_name') ?>
 
-e
+    <?= $form->field($model, 'social_type') ?>
+
     <?php  echo $form->field($model, 'status') ?>
 
     <?php  echo $form->field($model, 'email') ?>

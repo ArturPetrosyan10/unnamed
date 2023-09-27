@@ -41,7 +41,7 @@ use yii\grid\GridView;
 <?php $dataProvider->pagination->pageSize = 20; ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'tableOptions' => ['class' => 'table table-bordered table-hover table-striped'],
         'rowOptions' => function ($model) {
             if ($model->counts_checked !== 'true') {

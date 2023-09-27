@@ -169,7 +169,7 @@ $this->title = 'My Yii Application';
         var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 
         var areaChartData = {
-            labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'Mery'],
             datasets: [
                 {
                     label               : 'views',
@@ -180,7 +180,7 @@ $this->title = 'My Yii Application';
                     pointStrokeColor    : 'rgba(60,141,188,1)',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data                : [28, 48, 40, 19, 86, 27, 90]
+                    data                : [28, 48, 40, 19, 86, 27, 18]
                 },
                 {
                     label               : 'likes',

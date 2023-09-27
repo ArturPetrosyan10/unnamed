@@ -8,6 +8,7 @@ use app\models\Api;
 use app\models\BoostServices;
 use app\models\Order;
 use app\models\OrderLogs;
+use app\models\ProviderOrdersSearch;
 use app\models\Providers;
 use app\models\Request;
 use app\models\Services;
@@ -169,7 +170,7 @@ class OrderController extends Controller
                 $start_counts->played = @$data[0]["playCount"];
                 $start_counts->video_likes = @$data[0]["diggCount"];
                 $start_counts->name = @$data[0]["ownerUsername"];
-                $start_counts->app_type = 'instagram';
+                $start_counts->app_type = 'IG';
                 if($start_counts->save()){
                     $order = Order::findOne($_GET['order_id']);
                     $order->counts_checked = 'true';
@@ -197,22 +198,22 @@ class OrderController extends Controller
         if(@$_SERVER['USER'] != 'apache') {
             $panel_url  = "https://panel.instaboost.ge/order/add-orders";
             $data_for_panel = '{
-                "instaboost_sign":"589F219DC107C0C70593CAF38C9769E2",
-                "instaboost_webhookId":"ux2GAbAUKE57FKR",
-                "instaboost_transactionId":"TC-TR_R9Nb2dA",
+                "instaboost_sign":"465D5CF9C77B28AEFCD68E51F1ACE1F7",
+                "instaboost_webhookId":"wFia3SrEPIQ2pNb",
+                "instaboost_transactionId":"TC-TR_1DVbJYR",
                 "instaboost_transactionStatus":"ONE_TIME_PAYMENT_STATUS_PAID",
-                "instaboost_amount":"10.00",
+                "instaboost_amount":"25.00",
                 "instaboost_currency":"GEL",
-                "instaboost_customer_name":"Tinatin Khabeishvili",
-                "instaboost_customer_email":"khabeishvilitinatin@gmail.com",
+                "instaboost_customer_name":"Tornike Ramishvili",
+                "instaboost_customer_email":"tornikeramishvili94@gmail.com",
                 "instaboost_customer_mobile":"1112745",
                 "instaboost_customer_comment":" ",
-                "instaboost_tildaOrderId":"1916961574",
-                "instaboost_origName":"TT 45000 ნახვა",
-                "instaboost_soctype":"TT",
-                "instaboost_quantity":[45000],
+                "instaboost_tildaOrderId":"2049268445",
+                "instaboost_origName":"TG 700 პრემიუმ გამომწერი",
+                "instaboost_soctype":"TG",
+                "instaboost_quantity":[700],
                 "instaboost_description":"ნახვა",
-                "instaboost_link":"https://vt.tiktok.com/ZSL3A3XDx/"
+                "instaboost_link":"https://t.me/TFVPM1GEORGIA"
             }';
             $curl = curl_init($panel_url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -343,6 +344,43 @@ class OrderController extends Controller
         }
     }
 
+    public function actionApiBalance(){
+        $provs = Providers::find()
+                    ->all();
+        foreach ($provs as $prov) {
+            $api = new Api();
+            $api->api_url= $prov->name;
+            $api->api_key= $prov->api_key;
+
+            $balanceResponse = $api->balance(); // Call the balance method
+            $prov->balance = $balanceResponse->balance;
+            $prov->updated_at = date('Y-m-d H:i:s');
+            $prov->save();
+        }
+    }
+    public function actionTest(){
+//        $updatedRows = ProviderOrders::updateAll(['service_id' => 33],  ['>', 'id',10000 ]);
+        $searchModel = new ProviderOrdersSearch();
+        /**  the order of query is important */
+        $query = $searchModel->prov_search($this->request->queryParams);
+        $count = $query['count'];
+        $query = $query['query'];
+
+        $model = new ProviderOrders();
+
+        $services = $model->getServices();
+        $page = $_GET['paging'] ?? 1;
+        return $this->render('test', [
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'query' => $query,
+            'page'=>$page,
+            'services'=>$services,
+            'count'=>$count,
+
+        ]);
+    }
+
     public function actionIndex()
     {
         $searchModel = new OrderSearch();
@@ -395,15 +433,33 @@ class OrderController extends Controller
      * add start counts telegram
      */
     public function actionTelegram($data = null){
-        $channelUsername = '@chanachenq'; // Replace with the username of your channel
-        $channelUsername = '@webprogrammists'; // Replace with the username of your channel
-        $botToken = '6620419587:AAFkohQNl-T9rw5qQi4K3-idSDXXB7yRARY';
-        $action = 'getChatMembersCount';
-        $url = "https://api.telegram.org/bot{$botToken}/{$action}?chat_id={$channelUsername}";
-        $response = file_get_contents($url);
-
-        $data = json_decode($response, true);
-        var_dump($data);
+        $token = Tokens::find()->where(['name'=>'get_order'])->one()->token;
+        $botToken = Tokens::find()->where(['name'=>'TG'])->one()->token;
+        if(@$data['token'] === $token) {
+            $link = parse_url(@$data['link']);
+            $link['path'] = trim($link['path'], '/');
+            if ($link['path'][0] !== '+' || $link['path'][0] !== '-') {
+                $link = '@' . $link['path'];
+                $channelUsername = $link;
+            } else {
+                $channelUsername = '';
+            }
+            $action = 'getChatMembersCount';
+            $url = "https://api.telegram.org/bot{$botToken}/{$action}?chat_id={$channelUsername}";
+            $response = file_get_contents($url);
+            $query = json_decode($response, true);
+            if (@$data['order_id'] && @$query) {
+                $start_counts = new ProviderCounts();
+                $start_counts->order_id = $data['order_id'];
+                $start_counts->follows = $query["result"];
+                $start_counts->app_type = 'TG';
+                if ($start_counts->save()) {
+                    $order = Order::findOne($data['order_id']);
+                    $order->counts_checked = 'true';
+                    $order->save();
+                }
+            }
+        }
     }
     public function actionYoutube($data)
     {
@@ -517,7 +573,7 @@ class OrderController extends Controller
                             $start_counts->order_id = $_GET['order_id'];
                             $start_counts->follows = $subscriberCount;
                             $start_counts->videos_count = $videoCount;
-                            $start_counts->app_type = 'Youtube';
+                            $start_counts->app_type = 'YT';
                             if($start_counts->save()){
                                 $order = Order::findOne($_GET['order_id']);
                                 $order->counts_checked = 'true';
@@ -953,10 +1009,88 @@ class OrderController extends Controller
         $status->prov_order_id = $id;
         $status->provider_id = $provider_order['provider_id'];
         $status->service_id = $provider_order['service_id'];
-//        $status->back_order_id = $orderResponse->order;
+        $status->back_order_id = $orderResponse->order;
         $status->created_at = date('y-m-d H:i:s');
         var_dump($status->save());
         return $this->redirect('index');
+    }
+    public function actionSendOrder(){
+        if(Yii::$app->request->isPost){
+            $post = Yii::$app->request->post();
+            if(isset($post['auto_likes'])){
+                $post['service'] = $post['autolike']['service_id'];
+                $min_max = explode('-', $post['like']['min-max']);
+                $min = $min_max[0];
+                $max = $min_max[1];
+                $service = $post['service'];
+                $old_posts = $post['existing'];
+                $posts = $post['future'];
+
+                $username = (new ProviderOrders)->getUsername($post['prov_order_id']);
+            }
+            elseif(isset($post['auto_views'])){
+                $post['service'] = $post['autoView']['service_id'];
+                $min_max = explode('-', $post['view']['min-max']);
+                $min = $min_max[0];
+                $max = $min_max[1];
+                $service = $post['service'];
+                $old_posts = $post['existing'];
+                $posts = $post['future'];
+                $username = (new ProviderOrders)->getUsername($post['prov_order_id']);
+            }
+            echo '<pre>';
+            var_dump($username);
+            die;
+            $delay = 0;
+            $boost_service = Services::find()
+                ->select('def_boost_service , def_provider, providers.name, providers.api_key')
+                ->where(['services.id' => $post['service']])
+                ->leftJoin('providers','services.def_provider = providers.id')
+                ->asArray()
+                ->one();
+
+            $api = new Api();
+            $api->api_key = $boost_service['api_key'];
+            $api->api_url = $boost_service['name'];
+            $b_service = $boost_service['def_boost_service'];
+            echo '<pre>';
+            var_dump($min);
+            var_dump($max);
+            var_dump($api->api_key);
+            var_dump($api->api_url);
+            var_dump($b_service);
+            die;
+            $id = $post['prov_order_id'];
+            echo '<pre>';
+            var_dump($post);
+            die;
+            foreach ($post['quantity'] as $index => $item) {
+                $orderData = [
+                    'api_key' => $api->api_key,
+                    'action' => 'add',
+                    'service' => $b_service,
+                    'link' => $post['link'][$index],
+                    'quantity' => $item,
+                    'runs'=>''
+                ];
+//                $orderResponse = $api->order($orderData); // Call the order method
+//                var_dump($orderResponse);
+                $status = new Status();
+                $status->prov_order_id = $id;
+                $status->provider_id = $boost_service['def_provider'];
+                $status->service_id = $boost_service['def_boost_service'];
+                @$status->back_order_id = @$orderResponse->order;
+                $status->created_at = date('y-m-d H:i:s');
+//                var_dump($status->save());
+                var_dump($orderData);
+            }
+            die;
+            return $this->redirect('index');
+        }
+        echo '<pre>';
+        var_dump($post);
+        var_dump($orderData);
+        die;
     }
     public function actionApiRefill($id)
     {

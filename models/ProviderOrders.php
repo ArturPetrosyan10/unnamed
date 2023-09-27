@@ -22,6 +22,7 @@ use Yii;
  * @property float customer_comment
  * @property float customer_mobile
  * @property float link
+ * @property int status_paid
  */
 class ProviderOrders extends \yii\db\ActiveRecord
 {
@@ -62,8 +63,32 @@ class ProviderOrders extends \yii\db\ActiveRecord
     {
         return Services::find()->where(['id' => $this->service_id])->one()['service_name'];
     }
+    public static function getServices()
+    {
+        return Services::find()
+            ->select('services.*,providers.name')
+            ->leftJoin('boost_services','services.def_service = boost_services.id')
+            ->leftJoin('providers','services.def_provider = providers.id')
+            ->asArray()
+            ->all();
+    }
     public function getProvider()
     {
         return Providers::find()->where(['id' => $this->provider_id])->one()['name'];
     }
+    public function getStarts()
+    {
+        return Providers::find()->where(['id' => $this->provider_id])->one()['name'];
+    }
+    public function getUsername($prov_order_id)
+    {
+        $username = ProviderOrders::find()
+            ->select('provider_counts.name')
+            ->where(['provider_orders.id'=>$prov_order_id])
+            ->leftJoin('provider_counts','provider_orders.order_id = provider_counts.order_id')
+            ->asArray()
+            ->one()['name'];
+        return $username;
+    }
+
 }

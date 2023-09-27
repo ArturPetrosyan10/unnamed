@@ -30,7 +30,7 @@ class Api
     /** Add order */
     public function order($data)
     {
-        $post = array_merge(['key' => $this->api_key, 'action' => 'balance'], $data);
+        $post = array_merge(['key' => $this->api_key, 'action' => 'add'], $data);
         return json_decode($this->connect($post));
     }
 
@@ -122,8 +122,9 @@ class Api
     {
         return json_decode(
             $this->connect([
-                'api_key' => $this->api_key,
-                'action' => 'services',
+                'key' => $this->api_key,
+                'action' => 'balance',
+//                'action' => 'services',
             ])
         );
     }

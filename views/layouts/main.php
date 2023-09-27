@@ -24,6 +24,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+1zX2tn9q7iHZI5izn8ETdTK6Uv5C9F6rIBb5FxCuR7f+l5J" crossorigin="anonymous">-->
     <title><?= 'Panel Istaboost' ?></title>
     <?php $this->head() ?>
     <style>

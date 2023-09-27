@@ -20,7 +20,7 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        'css/site.css?v=1',
         //plugins for menu
         'css/plugins/fontawesome-free/css/all.min.css',
         'css/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css',
@@ -39,12 +39,11 @@ class AppAsset extends AssetBundle
         'css/dist/js/adminlte.min.js',
         'css/dist/js/demo.js',
         'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
-
-        'js/app.js?v=10',
+        'js/app.js?v=0',
 
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap5\BootstrapAsset'
+//        'yii\web\YiiAsset',
+//        'yii\bootstrap5\BootstrapAsset'
     ];
 }

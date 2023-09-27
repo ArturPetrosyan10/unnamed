@@ -45,6 +45,7 @@ class Services extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
     public function attributeLabels()
+
     {
         return [
             'id' => 'ID',
@@ -55,4 +56,20 @@ class Services extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
-  }
+
+    public static function getBalance($service_id)
+    {
+        $prov = Services::find()
+            ->select('providers.balance,providers.id')
+            ->where(['services.id' => $service_id])
+            ->leftJoin('providers','services.def_provider = providers.id')
+            ->asArray()
+            ->one();
+        return @$prov['balance'];
+    }
+    public static function getPrice($service_id)
+    {
+        $price = @(Services::findOne($service_id)->price);
+        return @$price;
+    }
+}

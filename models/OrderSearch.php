@@ -68,6 +68,7 @@ class OrderSearch extends Order
             'employee_id' => $this->employee_id,
             'tilda_id' => $this->tilda_id,
             'customer_mobile' => $this->customer_mobile,
+            'social_type' => $this->social_type,
             'customer_comment' => $this->customer_comment,
             'reference' => $this->reference,
             'description' => $this->description,

@@ -13,6 +13,8 @@ use Yii;
  * @property string|null $contact_person
  * @property string|null $email
  * @property string|null $phone
+ * @property string|null $balance
+ * @property string|null $updated_at
  */
 class Providers extends \yii\db\ActiveRecord
 {

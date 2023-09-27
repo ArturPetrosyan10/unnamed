@@ -29,10 +29,10 @@ foreach ($providers as $provider) {
 
 $services = Services::find()->select(['id' , 'service_name'])->asArray()->all();
 $ServiceItems = [];
-//$ServiceItems[''] = 'Select Service';
 foreach ($services as $service) {
     $ServiceItems[$service['id']] = $service['service_name'];
 }
+
 $status = Status::find()->where(['prov_order_id' => $model->id])->one();
 ?>
 <?php
@@ -73,7 +73,8 @@ $status = Status::find()->where(['prov_order_id' => $model->id])->one();
                         ) */'' ?>
                         <?= $form->field($model, 'service_id[]')->label('Service')->dropDownList(
                             $ServiceItems,
-                            ['class' => 'form-control',
+                            [
+                                'class' => 'form-control',
                                 'prompt' => 'Select Service',
                                 'options' => [
                                     @$selectedServiceId => ['selected' => true]
